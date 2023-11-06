@@ -1,5 +1,6 @@
 package edu.temple.basicbrowser
 
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.webkit.WebView
@@ -28,5 +29,20 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+
+        goButton.setOnClickListener {
+            val inputUrl = urlEditText.text.toString()
+            val validUrl = if (ValidateUrl(inputUrl)) inputUrl else "https://$inputUrl"
+            webView.loadUrl(validUrl)
+        }
+    }
+
+    private fun ValidateUrl(url: String): Boolean {
+        return try {
+            val uri = Uri.parse(url)
+            uri.scheme != null && uri.host != null
+        } catch (e: Exception) {
+            false
+        }
     }
 }
